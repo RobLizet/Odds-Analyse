@@ -35,16 +35,14 @@
     <div class="titleRow">
       <h2>Best scorende odds</h2>
       <select id="minGames" class="filter" aria-label="Minimum aantal keer">
-        <option value="1">Vanaf 1x</option>
-        <option value="2">Vanaf 2x</option>
-        <option value="3">Vanaf 3x</option>
+        <option value="3" selected>Vanaf 3x</option>
         <option value="5">Vanaf 5x</option>
         <option value="10">Vanaf 10x</option>
       </select>
     </div>
-    <div class="hint">Dezelfde odd wordt automatisch samengevoegd. Ranglijst sorteert eerst op score en daarna op aantal metingen.</div>
+    <div class="hint">Een odd komt pas in de ranglijst bij minimaal 3 metingen en minimaal 66,7% goed.</div>
     <div id="ranking" class="ranking"></div>
-    <div class="mini">Voorbeeld, odd 1,95 met 3 goede uitslagen wordt 3 van 3, 100%.</div>
+    <div class="mini">Dus 2 van 3 goed telt mee. 1 van 3 goed niet.</div>
   </section>
 
   <section class="card">
@@ -67,7 +65,7 @@ function save(){localStorage.setItem(KEY,JSON.stringify(data))}
 function parseOdd(){const v=Number(oddInput.value.trim().replace(',','.'));if(!Number.isFinite(v)||v<1.01||v>1000){msg.textContent='Vul eerst een geldige odd in, bijvoorbeeld 1,75.';return null}return Math.round(v*100)/100}
 function add(ok){const odd=parseOdd();if(odd===null)return;data.push({odd,ok,createdAt:new Date().toISOString()});save();oddInput.value='';msg.textContent='';render();oddInput.focus()}
 function grouped(){const map=new Map();for(const x of data){const key=Number(x.odd).toFixed(2);if(!map.has(key))map.set(key,{odd:Number(key),total:0,good:0,bad:0});const g=map.get(key);g.total++;if(x.ok)g.good++;else g.bad++}return [...map.values()].map(g=>({...g,score:g.total?g.good/g.total*100:0}))}
-function render(){const good=data.filter(x=>x.ok).length;totalEl.textContent=data.length;goodEl.textContent=good;scoreEl.textContent=data.length?Math.round(good/data.length*100)+'%':'0%';const min=Number(minGames.value);const rows=grouped().filter(g=>g.total>=min).sort((a,b)=>b.score-a.score||b.total-a.total||a.odd-b.odd);if(!rows.length){ranking.innerHTML='<div class="empty">Nog geen odds met minimaal '+min+' meting'+(min===1?'':'en')+'.</div>';return}ranking.innerHTML=rows.map((g,i)=>{const cls=g.score===100?'perfect':g.score<50?'poor':'';return '<div class="rank"><div class="place">#'+(i+1)+'</div><div><div class="odd">'+g.odd.toFixed(2).replace('.',',')+'</div><div class="details">'+g.good+' goed, '+g.bad+' fout, '+g.total+' totaal</div></div><div class="pct '+cls+'">'+Math.round(g.score)+'%</div></div>'}).join('')}
+function render(){const good=data.filter(x=>x.ok).length;totalEl.textContent=data.length;goodEl.textContent=good;scoreEl.textContent=data.length?Math.round(good/data.length*100)+'%':'0%';const min=Number(minGames.value);const rows=grouped().filter(g=>g.total>=min&&g.score>=66.6666667).sort((a,b)=>b.score-a.score||b.total-a.total||a.odd-b.odd);if(!rows.length){ranking.innerHTML='<div class="empty">Nog geen odds met minimaal '+min+' metingen en minstens 66,7% goed.</div>';return}ranking.innerHTML=rows.map((g,i)=>{const cls=g.score===100?'perfect':g.score<66.7?'poor':'';return '<div class="rank"><div class="place">#'+(i+1)+'</div><div><div class="odd">'+g.odd.toFixed(2).replace('.',',')+'</div><div class="details">'+g.good+' goed, '+g.bad+' fout, '+g.total+' totaal</div></div><div class="pct '+cls+'">'+Math.round(g.score)+'%</div></div>'}).join('')}
 document.getElementById('goodBtn').addEventListener('click',()=>add(true));
 document.getElementById('badBtn').addEventListener('click',()=>add(false));
 document.getElementById('undoBtn').addEventListener('click',()=>{if(data.length){data.pop();save();render()}});
