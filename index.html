@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <title>Odds Vinkjes</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Arial,Helvetica,sans-serif; background:#0f172a; color:#f8fafc; }
+    .wrap { max-width:720px; margin:0 auto; padding:20px; }
+    .card { background:#111827; border:1px solid #334155; border-radius:16px; padding:16px; margin-bottom:16px; }
+    h1 { font-size:26px; margin:0 0 6px; }
+    .sub { color:#94a3b8; margin-bottom:18px; }
+    label { display:block; margin-bottom:6px; font-size:14px; color:#cbd5e1; }
+    .row { display:grid; grid-template-columns:1fr 64px 64px; gap:10px; align-items:end; }
+    input { width:100%; font-size:22px; padding:14px; border-radius:12px; border:1px solid #475569; background:#020617; color:#fff; outline:none; }
+    button { min-height:54px; border:1px solid #475569; border-radius:12px; background:#1e293b; color:#fff; font-size:26px; font-weight:bold; cursor:pointer; }
+    button:active { transform:scale(.98); }
+    .good { background:#14532d; border-color:#22c55e; }
+    .bad { background:#7f1d1d; border-color:#ef4444; }
+    .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+    .stat { background:#111827; border:1px solid #334155; border-radius:14px; padding:14px; text-align:center; }
+    .stat small { color:#94a3b8; display:block; margin-bottom:4px; }
+    .stat strong { font-size:26px; }
+    .toolbar { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+    .toolbar button { min-height:42px; font-size:15px; padding:0 14px; }
+    .list { display:flex; flex-direction:column; gap:8px; }
+    .item { display:flex; justify-content:space-between; align-items:center; border:1px solid #334155; border-radius:12px; padding:12px 14px; background:#0b1220; }
+    .item .odd { font-size:22px; font-weight:bold; }
+    .item .mark { font-size:26px; }
+    .empty { color:#94a3b8; }
+    .msg { min-height:22px; margin-top:8px; color:#fbbf24; font-size:14px; }
+    .footer { color:#64748b; text-align:center; font-size:12px; margin-top:18px; }
+    @media (max-width:420px) { .row { grid-template-columns:1fr 58px 58px; } .wrap { padding:14px; } }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>Odds Vinkjes</h1>
+    <div class="sub">Voer een odd in en tik op groen of rood.</div>
+    <section class="card">
+      <div class="row">
+        <div><label for="odd">Odd</label><input id="odd" inputmode="decimal" placeholder="1,75" autocomplete="off"></div>
+        <button id="goodBtn" class="good" type="button" aria-label="Goed">✓</button>
+        <button id="badBtn" class="bad" type="button" aria-label="Fout">✕</button>
+      </div>
+      <div id="msg" class="msg"></div>
+    </section>
+    <section class="stats">
+      <div class="stat"><small>Totaal</small><strong id="total">0</strong></div>
+      <div class="stat"><small>Goed</small><strong id="good">0</strong></div>
+      <div class="stat"><small>Score</small><strong id="score">0%</strong></div>
+    </section>
+    <section class="card" style="margin-top:16px">
+      <div class="toolbar">
+        <button id="undoBtn" type="button">Laatste wissen</button>
+        <button id="clearBtn" type="button">Alles wissen</button>
+        <button id="exportBtn" type="button">Export CSV</button>
+      </div>
+      <div id="list" class="list"></div>
+    </section>
+    <div class="footer">Gegevens worden alleen op dit apparaat opgeslagen.</div>
+  </main>
+  <script>
+    const KEY='odds-vinkjes-data-v1';
+    const oddInput=document.getElementById('odd'),msg=document.getElementById('msg'),list=document.getElementById('list');
+    const totalEl=document.getElementById('total'),goodEl=document.getElementById('good'),scoreEl=document.getElementById('score');
+    let data=[]; try{data=JSON.parse(localStorage.getItem(KEY)||'[]')}catch{data=[]}
+    function save(){localStorage.setItem(KEY,JSON.stringify(data))}
+    function parseOdd(){const v=Number(oddInput.value.trim().replace(',','.'));if(!Number.isFinite(v)||v<1.01||v>1000){msg.textContent='Vul eerst een geldige odd in, bijvoorbeeld 1,75.';return null}return Math.round(v*100)/100}
+    function add(ok){const odd=parseOdd();if(odd===null)return;data.push({odd,ok,createdAt:new Date().toISOString()});save();oddInput.value='';msg.textContent='';render();oddInput.focus()}
+    function render(){const good=data.filter(x=>x.ok).length;totalEl.textContent=data.length;goodEl.textContent=good;scoreEl.textContent=data.length?Math.round(good/data.length*100)+'%':'0%';if(!data.length){list.innerHTML='<div class="empty">Nog geen odds ingevoerd.</div>';return}list.innerHTML=[...data].reverse().map(x=>'<div class="item"><span class="odd">'+x.odd.toFixed(2).replace('.',',')+'</span><span class="mark">'+(x.ok?'✓':'✕')+'</span></div>').join('')}
+    document.getElementById('goodBtn').addEventListener('click',()=>add(true));
+    document.getElementById('badBtn').addEventListener('click',()=>add(false));
+    document.getElementById('undoBtn').addEventListener('click',()=>{if(data.length){data.pop();save();render()}});
+    document.getElementById('clearBtn').addEventListener('click',()=>{if(confirm('Alle ingevoerde odds wissen?')){data=[];save();render()}});
+    document.getElementById('exportBtn').addEventListener('click',()=>{if(!data.length){msg.textContent='Er is nog niets om te exporteren.';return}const rows=[['odd','resultaat','datum']].concat(data.map(x=>[x.odd.toFixed(2),x.ok?'goed':'fout',x.createdAt]));const csv=rows.map(r=>r.join(';')).join('\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='odds-vinkjes.csv';a.click();URL.revokeObjectURL(url)});
+    if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
+    render();
+  </script>
+</body>
+</html>
