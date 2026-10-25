@@ -8,21 +8,23 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <style>
-    :root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0f172a;color:#f8fafc}.wrap{max-width:760px;margin:0 auto;padding:16px}.card{background:#111827;border:1px solid #334155;border-radius:18px;padding:16px;margin-bottom:16px}h1{font-size:26px;margin:0 0 6px}.sub{color:#94a3b8;margin-bottom:18px}label{display:block;margin-bottom:6px;font-size:14px;color:#cbd5e1}.row{display:grid;grid-template-columns:1fr 64px 64px;gap:10px;align-items:end}input{width:100%;font-size:22px;padding:14px;border-radius:12px;border:1px solid #475569;background:#020617;color:#fff;outline:none}button{min-height:54px;border:1px solid #475569;border-radius:12px;background:#1e293b;color:#fff;font-size:26px;font-weight:bold;cursor:pointer}.good{background:#14532d;border-color:#22c55e}.bad{background:#7f1d1d;border-color:#ef4444}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{background:#111827;border:1px solid #334155;border-radius:14px;padding:14px;text-align:center}.stat small{color:#94a3b8;display:block;margin-bottom:4px}.stat strong{font-size:26px}.toolbar{display:flex;gap:10px;flex-wrap:wrap}.toolbar button{min-height:42px;font-size:15px;padding:0 14px}.titleRow{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px}.titleRow h2{font-size:20px;margin:0}.hint{color:#94a3b8;font-size:13px;margin-bottom:12px}.ranking{display:flex;flex-direction:column;gap:9px}.rank{display:grid;grid-template-columns:46px 1fr auto;gap:10px;align-items:center;border:1px solid #334155;border-radius:13px;padding:12px;background:#0b1220}.place{font-size:16px;color:#94a3b8;font-weight:bold}.odd{font-size:23px;font-weight:bold}.details{font-size:13px;color:#94a3b8;margin-top:4px}.pct{font-size:22px;font-weight:bold;text-align:right}.perfect{color:#4ade80}.poor{color:#f87171}.empty{color:#94a3b8}.msg{min-height:22px;margin-top:8px;color:#fbbf24;font-size:14px}.footer{color:#64748b;text-align:center;font-size:12px;margin-top:18px}.filter{font-size:14px;padding:9px 10px;border:1px solid #475569;border-radius:10px;background:#0b1220;color:#fff}.mini{font-size:13px;color:#94a3b8;margin-top:10px}@media(max-width:420px){.row{grid-template-columns:1fr 58px 58px}.wrap{padding:12px}.rank{grid-template-columns:38px 1fr auto}.pct{font-size:20px}}
+    :root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0f172a;color:#f8fafc}.wrap{max-width:760px;margin:0 auto;padding:16px}.card{background:#111827;border:1px solid #334155;border-radius:18px;padding:16px;margin-bottom:16px}h1{font-size:26px;margin:0 0 6px}.sub{color:#94a3b8;margin-bottom:18px}label{display:block;margin-bottom:6px;font-size:14px;color:#cbd5e1}.entry{display:grid;grid-template-columns:1fr 92px 64px 64px;gap:10px;align-items:end}input,select{width:100%;font-size:18px;padding:14px;border-radius:12px;border:1px solid #475569;background:#020617;color:#fff;outline:none}#odd{font-size:22px}button{min-height:54px;border:1px solid #475569;border-radius:12px;background:#1e293b;color:#fff;font-size:26px;font-weight:bold;cursor:pointer}.good{background:#14532d;border-color:#22c55e}.bad{background:#7f1d1d;border-color:#ef4444}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{background:#111827;border:1px solid #334155;border-radius:14px;padding:14px;text-align:center}.stat small{color:#94a3b8;display:block;margin-bottom:4px}.stat strong{font-size:26px}.toolbar{display:flex;gap:10px;flex-wrap:wrap}.toolbar button{min-height:42px;font-size:15px;padding:0 14px}.titleRow{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px}.titleRow h2{font-size:20px;margin:0}.hint{color:#94a3b8;font-size:13px;margin-bottom:12px}.ranking{display:flex;flex-direction:column;gap:9px}.rank{display:grid;grid-template-columns:46px 1fr auto;gap:10px;align-items:center;border:1px solid #334155;border-radius:13px;padding:12px;background:#0b1220}.place{font-size:16px;color:#94a3b8;font-weight:bold}.odd{font-size:23px;font-weight:bold}.details{font-size:13px;color:#94a3b8;margin-top:4px}.pct{font-size:22px;font-weight:bold;text-align:right}.perfect{color:#4ade80}.empty{color:#94a3b8}.msg{min-height:22px;margin-top:8px;color:#fbbf24;font-size:14px}.footer{color:#64748b;text-align:center;font-size:12px;margin-top:18px}.filter{font-size:14px;padding:9px 10px;border:1px solid #475569;border-radius:10px;background:#0b1220;color:#fff}.mini{font-size:13px;color:#94a3b8;margin-top:10px}@media(max-width:520px){.entry{grid-template-columns:1fr 86px 58px 58px}.wrap{padding:12px}.rank{grid-template-columns:38px 1fr auto}.pct{font-size:20px}}@media(max-width:390px){.entry{grid-template-columns:1fr 78px 54px 54px;gap:7px}input,select{padding:12px 9px}}
   </style>
 </head>
 <body>
 <main class="wrap">
   <h1>Odds Analyse</h1>
-  <div class="sub">Voer een odd in en tik alleen op groen of rood.</div>
+  <div class="sub">Voer de odd één keer in, kies hoeveel dezelfde uitslagen je wilt toevoegen en tik op groen of rood.</div>
 
   <section class="card">
-    <div class="row">
+    <div class="entry">
       <div><label for="odd">Odd</label><input id="odd" inputmode="decimal" placeholder="1,75" autocomplete="off"></div>
+      <div><label for="repeat">Herhaal</label><select id="repeat" aria-label="Aantal keer herhalen"><option value="1">1x</option><option value="2">2x</option><option value="3">3x</option><option value="4">4x</option><option value="5">5x</option><option value="6">6x</option><option value="7">7x</option><option value="8">8x</option><option value="9">9x</option><option value="10">10x</option></select></div>
       <button id="goodBtn" class="good" type="button" aria-label="Goed">✓</button>
       <button id="badBtn" class="bad" type="button" aria-label="Fout">✕</button>
     </div>
     <div id="msg" class="msg"></div>
+    <div class="mini">Bij gemengde resultaten blijft de odd staan. Voorbeeld, kies 3x en groen, daarna 2x en rood.</div>
   </section>
 
   <section class="stats">
@@ -34,11 +36,7 @@
   <section class="card" style="margin-top:16px">
     <div class="titleRow">
       <h2>Best scorende odds</h2>
-      <select id="minGames" class="filter" aria-label="Minimum aantal keer">
-        <option value="3" selected>Vanaf 3x</option>
-        <option value="5">Vanaf 5x</option>
-        <option value="10">Vanaf 10x</option>
-      </select>
+      <select id="minGames" class="filter" aria-label="Minimum aantal keer"><option value="3" selected>Vanaf 3x</option><option value="5">Vanaf 5x</option><option value="10">Vanaf 10x</option></select>
     </div>
     <div class="hint">Een odd komt pas in de ranglijst bij minimaal 3 metingen en minimaal 66,7% goed.</div>
     <div id="ranking" class="ranking"></div>
@@ -47,7 +45,8 @@
 
   <section class="card">
     <div class="toolbar">
-      <button id="undoBtn" type="button">Laatste wissen</button>
+      <button id="clearOddBtn" type="button">Nieuwe odd</button>
+      <button id="undoBtn" type="button">Laatste invoer wissen</button>
       <button id="clearBtn" type="button">Alles wissen</button>
       <button id="exportBtn" type="button">Export CSV</button>
     </div>
@@ -57,19 +56,20 @@
 </main>
 <script>
 const KEY='odds-vinkjes-data-v1';
-const oddInput=document.getElementById('odd'),msg=document.getElementById('msg');
+const oddInput=document.getElementById('odd'),repeat=document.getElementById('repeat'),msg=document.getElementById('msg');
 const totalEl=document.getElementById('total'),goodEl=document.getElementById('good'),scoreEl=document.getElementById('score');
 const ranking=document.getElementById('ranking'),minGames=document.getElementById('minGames');
 let data=[];try{data=JSON.parse(localStorage.getItem(KEY)||'[]')}catch{data=[]}
 function save(){localStorage.setItem(KEY,JSON.stringify(data))}
 function parseOdd(){const v=Number(oddInput.value.trim().replace(',','.'));if(!Number.isFinite(v)||v<1.01||v>1000){msg.textContent='Vul eerst een geldige odd in, bijvoorbeeld 1,75.';return null}return Math.round(v*100)/100}
-function add(ok){const odd=parseOdd();if(odd===null)return;data.push({odd,ok,createdAt:new Date().toISOString()});save();oddInput.value='';msg.textContent='';render();oddInput.focus()}
+function add(ok){const odd=parseOdd();if(odd===null)return;const count=Math.max(1,Math.min(10,Number(repeat.value)||1));const batchId=Date.now()+'-'+Math.random().toString(36).slice(2);for(let i=0;i<count;i++)data.push({odd,ok,createdAt:new Date().toISOString(),batchId});save();msg.textContent=count+'x '+(ok?'goed':'fout')+' toegevoegd bij odd '+odd.toFixed(2).replace('.',',')+'.';repeat.value='1';render();oddInput.focus();oddInput.select()}
 function grouped(){const map=new Map();for(const x of data){const key=Number(x.odd).toFixed(2);if(!map.has(key))map.set(key,{odd:Number(key),total:0,good:0,bad:0});const g=map.get(key);g.total++;if(x.ok)g.good++;else g.bad++}return [...map.values()].map(g=>({...g,score:g.total?g.good/g.total*100:0}))}
-function render(){const good=data.filter(x=>x.ok).length;totalEl.textContent=data.length;goodEl.textContent=good;scoreEl.textContent=data.length?Math.round(good/data.length*100)+'%':'0%';const min=Number(minGames.value);const rows=grouped().filter(g=>g.total>=min&&g.score>=66.6666667).sort((a,b)=>b.score-a.score||b.total-a.total||a.odd-b.odd);if(!rows.length){ranking.innerHTML='<div class="empty">Nog geen odds met minimaal '+min+' metingen en minstens 66,7% goed.</div>';return}ranking.innerHTML=rows.map((g,i)=>{const cls=g.score===100?'perfect':g.score<66.7?'poor':'';return '<div class="rank"><div class="place">#'+(i+1)+'</div><div><div class="odd">'+g.odd.toFixed(2).replace('.',',')+'</div><div class="details">'+g.good+' goed, '+g.bad+' fout, '+g.total+' totaal</div></div><div class="pct '+cls+'">'+Math.round(g.score)+'%</div></div>'}).join('')}
+function render(){const good=data.filter(x=>x.ok).length;totalEl.textContent=data.length;goodEl.textContent=good;scoreEl.textContent=data.length?Math.round(good/data.length*100)+'%':'0%';const min=Number(minGames.value);const rows=grouped().filter(g=>g.total>=min&&g.score>=66.6666667).sort((a,b)=>b.score-a.score||b.total-a.total||a.odd-b.odd);if(!rows.length){ranking.innerHTML='<div class="empty">Nog geen odds met minimaal '+min+' metingen en minstens 66,7% goed.</div>';return}ranking.innerHTML=rows.map((g,i)=>{const cls=g.score===100?'perfect':'';return '<div class="rank"><div class="place">#'+(i+1)+'</div><div><div class="odd">'+g.odd.toFixed(2).replace('.',',')+'</div><div class="details">'+g.good+' goed, '+g.bad+' fout, '+g.total+' totaal</div></div><div class="pct '+cls+'">'+Math.round(g.score)+'%</div></div>'}).join('')}
 document.getElementById('goodBtn').addEventListener('click',()=>add(true));
 document.getElementById('badBtn').addEventListener('click',()=>add(false));
-document.getElementById('undoBtn').addEventListener('click',()=>{if(data.length){data.pop();save();render()}});
-document.getElementById('clearBtn').addEventListener('click',()=>{if(confirm('Alle ingevoerde odds wissen?')){data=[];save();render()}});
+document.getElementById('clearOddBtn').addEventListener('click',()=>{oddInput.value='';repeat.value='1';msg.textContent='';oddInput.focus()});
+document.getElementById('undoBtn').addEventListener('click',()=>{if(!data.length)return;const last=data[data.length-1];if(last.batchId){const id=last.batchId;let removed=0;while(data.length&&data[data.length-1].batchId===id){data.pop();removed++}msg.textContent=removed+' resultaat'+(removed===1?'':'en')+' van de laatste invoer gewist.'}else{data.pop();msg.textContent='Laatste resultaat gewist.'}save();render()});
+document.getElementById('clearBtn').addEventListener('click',()=>{if(confirm('Alle ingevoerde odds wissen?')){data=[];save();render();msg.textContent='Alles gewist.'}});
 document.getElementById('exportBtn').addEventListener('click',()=>{if(!data.length){msg.textContent='Er is nog niets om te exporteren.';return}const rows=[['odd','resultaat','datum']].concat(data.map(x=>[Number(x.odd).toFixed(2),x.ok?'goed':'fout',x.createdAt||'']));const csv=rows.map(r=>r.join(';')).join('\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='odds-analyse.csv';a.click();URL.revokeObjectURL(url)});
 minGames.addEventListener('change',render);
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
