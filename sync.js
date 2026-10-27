@@ -92,5 +92,7 @@
   addUi();
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',addUi);
   window.oddsLoadAlerts=loadAlerts;
+  // v15: automatische WB-historie (afgerekende WB-tips uit Vergelijk, Edge Function kind=wbhist)
+  window.oddsLoadWbHist=async()=>{const key=getKey();if(key.length<32)throw new Error('nokey');const r=await fetch(ENDPOINT+'?kind=wbhist&key='+encodeURIComponent(key),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const j=await r.json();if(!j||!j.payload||!Array.isArray(j.payload.groups))throw new Error('ongeldig antwoord');return j.payload};
   if(getKey())queueSync();
 })();
