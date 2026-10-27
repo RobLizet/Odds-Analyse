@@ -10,38 +10,17 @@
     localStorage.setItem(SYNC_KEY,k);return k;
   }
   function ensureKey(){return getKey()||newKey()}
-  function payload(){
-    const groups=typeof grouped==='function'?grouped():[];
-    return {version:1,updatedAt:new Date().toISOString(),groups:groups.map(g=>({odd:Number(g.odd),total:Number(g.total),good:Number(g.good),bad:Number(g.bad),score:Math.round(Number(g.score)*10)/10}))};
-  }
-  async function syncNow(){
-    const status=document.getElementById('syncStatus');
-    try{
-      const key=ensureKey();
-      const r=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key,payload:payload()})});
-      if(!r.ok)throw new Error('sync '+r.status);
-      if(status)status.textContent='✓ Automatisch gesynchroniseerd · '+new Date().toLocaleTimeString('nl-NL',{hour:'2-digit',minute:'2-digit'});
-    }catch(e){
-      console.warn('[Odds sync]',e);
-      if(status)status.textContent='Synchronisatie mislukt — gegevens blijven lokaal bewaard.';
-    }
-  }
-  function queueSync(){clearTimeout(timer);timer=setTimeout(syncNow,350)}
-
-  if(typeof save==='function'){
-    const oldSave=save;
-    save=function(){const r=oldSave.apply(this,arguments);queueSync();return r};
-  }
+  // v17 (Rob 27-10): handmatige lijst weg -> geen upload van eigen invoer meer. Alleen koppelsleutel + meldingen + WB-historie.
 
   function addUi(){
     if(!document.getElementById('syncCard')){
       const tab=document.getElementById('tabInput');
       if(tab){
         const card=document.createElement('section');card.id='syncCard';card.className='card';
-        card.innerHTML='<h2>Automatisch naar WedjeBetje</h2><div class="hint">Eenmalig koppelen. Daarna worden wijzigingen in Odds Analyse automatisch door WedjeBetje gebruikt.</div><div class="toolbar"><button id="linkWedjeBtn" class="primary" type="button">Koppel met WedjeBetje</button><button id="copySyncBtn" type="button">Koppelcode kopiëren</button></div><div id="syncStatus" class="mini"></div>';
+        card.innerHTML='<h2>Automatisch naar WedjeBetje</h2><div class="hint">Eenmalig koppelen. Daarna gaan de WB-historie en de sterke-odd meldingen automatisch.</div><div class="toolbar"><button id="linkWedjeBtn" class="primary" type="button">Koppel met WedjeBetje</button><button id="copySyncBtn" type="button">Koppelcode kopiëren</button></div><div id="syncStatus" class="mini"></div>';
         const stats=tab.querySelector('.stats');
         if(stats&&stats.nextSibling)tab.insertBefore(card,stats.nextSibling);else tab.appendChild(card);
-        document.getElementById('linkWedjeBtn').addEventListener('click',()=>{const key=ensureKey();syncNow();location.href='https://wedjebetje.nl/#odds-sync='+encodeURIComponent(key)});
+        document.getElementById('linkWedjeBtn').addEventListener('click',()=>{const key=ensureKey();location.href='https://wedjebetje.nl/#odds-sync='+encodeURIComponent(key)});
         document.getElementById('copySyncBtn').addEventListener('click',async()=>{const key=ensureKey();try{await navigator.clipboard.writeText(key);document.getElementById('syncStatus').textContent='Koppelcode gekopieerd.'}catch{prompt('Kopieer deze koppelcode:',key)}});
         document.getElementById('syncStatus').textContent=getKey()?'Automatische koppeling is ingesteld.':'Nog niet gekoppeld met WedjeBetje.';
       }
@@ -94,5 +73,4 @@
   window.oddsLoadAlerts=loadAlerts;
   // v15: automatische WB-historie (afgerekende WB-tips uit Vergelijk, Edge Function kind=wbhist)
   window.oddsLoadWbHist=async()=>{const key=getKey();if(key.length<32)throw new Error('nokey');const r=await fetch(ENDPOINT+'?kind=wbhist&key='+encodeURIComponent(key),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const j=await r.json();if(!j||!j.payload||!Array.isArray(j.payload.groups))throw new Error('ongeldig antwoord');return j.payload};
-  if(getKey())queueSync();
 })();
