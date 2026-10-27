@@ -3,25 +3,163 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0f172a">
+<meta name="theme-color" content="#FFE9C7">
 <title>Odds Analyse</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
-:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0f172a;color:#f8fafc}.wrap{max-width:760px;margin:0 auto;padding:16px}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}.tabBtn{min-height:44px;font-size:16px;border:1px solid #475569;border-radius:12px;background:#1e293b;color:#fff}.tabBtn.active{background:#2563eb;border-color:#60a5fa}.tab{display:none}.tab.active{display:block}.card{background:#111827;border:1px solid #334155;border-radius:18px;padding:16px;margin-bottom:16px}h1{font-size:26px;margin:0 0 6px}.sub{color:#94a3b8;margin-bottom:18px}label{display:block;margin-bottom:6px;font-size:14px;color:#cbd5e1}.entry{display:grid;grid-template-columns:1fr 92px 64px 64px;gap:10px;align-items:end}input,select{width:100%;font-size:18px;padding:14px;border-radius:12px;border:1px solid #475569;background:#020617;color:#fff;outline:none}#odd{font-size:22px}button{min-height:54px;border:1px solid #475569;border-radius:12px;background:#1e293b;color:#fff;font-weight:bold;cursor:pointer}.good{background:#14532d;border-color:#22c55e}.bad{background:#7f1d1d;border-color:#ef4444}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{background:#111827;border:1px solid #334155;border-radius:14px;padding:14px;text-align:center}.stat small{color:#94a3b8;display:block;margin-bottom:4px}.stat strong{font-size:26px}.toolbar{display:flex;gap:10px;flex-wrap:wrap}.toolbar button,.importBtn{min-height:42px;font-size:15px;padding:0 14px}.hint{color:#94a3b8;font-size:13px;margin-bottom:12px}.searchBox{margin-bottom:12px}.searchBox input{font-size:17px;padding:12px 14px}.ranking{display:flex;flex-direction:column;gap:9px}.rank{display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center;border:1px solid #334155;border-radius:13px;padding:12px;background:#0b1220}.place{font-size:16px;color:#94a3b8;font-weight:bold}.odd{font-size:23px;font-weight:bold}.marks{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}.mark{font-size:23px;line-height:1}.mark.ok{color:#4ade80}.mark.no{color:#f87171}.details{font-size:12px;color:#94a3b8;margin-top:6px}.pct{font-size:22px;font-weight:bold;text-align:right}.perfect{color:#4ade80}.empty{color:#94a3b8}.msg{min-height:22px;margin-top:8px;color:#fbbf24;font-size:14px}.footer{color:#64748b;text-align:center;font-size:12px;margin-top:18px}.mini{font-size:13px;color:#94a3b8;margin-top:10px}.importCard h2{margin:0 0 8px;font-size:20px}.importStatus{font-size:14px;color:#cbd5e1;margin:10px 0}.preview{display:flex;flex-direction:column;gap:8px;margin-top:10px}.previewRow{display:grid;grid-template-columns:1fr 48px 48px 42px;gap:8px;align-items:center;border:1px solid #334155;border-radius:10px;padding:10px;background:#0b1220}.previewRow input{padding:10px;font-size:18px}.previewToggle{min-height:42px;font-size:20px;padding:0}.previewToggle.activeGood{background:#14532d;border-color:#22c55e}.previewToggle.activeBad{background:#7f1d1d;border-color:#ef4444}.removeBtn{min-height:42px;font-size:18px;padding:0;background:#3f1d1d}.previewActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.previewActions button{min-height:42px;font-size:15px;padding:0 14px}.primary{background:#2563eb;border-color:#60a5fa}.hidden{display:none!important}@media(max-width:520px){.entry{grid-template-columns:1fr 86px 58px 58px}.wrap{padding:12px}.rank{grid-template-columns:36px 1fr auto}.pct{font-size:20px}.previewRow{grid-template-columns:1fr 44px 44px 38px;gap:6px}}@media(max-width:390px){.entry{grid-template-columns:1fr 78px 54px 54px;gap:7px}input,select{padding:12px 9px}}
+/* Odds Analyse — WedjeBetje 'Licht' (waarden letterlijk uit Toto-AI theme-licht.css DEEL B + new-theme.css). Alleen weergave. */
+:root{
+  --l-bg:#FFFDF2;--l-card:#FFFFFF;--l-card2:#F7F5EC;--l-ink:#111439;--l-mute:#5D6079;--l-faint:#8A8FA3;--l-line:#ECE9DC;
+  --l-accent:#635BFF;--l-soft:#F1EFFB;--l-tip:#FFD466;--l-away:#EE8A78;
+  --l-head:linear-gradient(115deg,#FFE9C7 0%,#FCD8EC 32%,#E4DDFF 64%,#D3F1FD 100%);
+  --l-shadow:0 1px 2px rgba(17,20,57,.04),0 4px 14px rgba(17,20,57,.05);
+  --ok:#15803d;--ok-bg:rgba(34,197,94,.13);--ok-line:rgba(34,197,94,.45);   /* = sterke-odd badge in WedjeBetje (ui.js) */
+  --no:#D2554A;--no-bg:rgba(210,85,74,.10);--no-line:rgba(210,85,74,.40);   /* = --vg-mis in Licht */
+  --warn:#B7791F;--warn-bg:rgba(183,121,31,.10);--warn-line:rgba(183,121,31,.38); /* = --vg-warn in Licht */
+  --font-main:'Plus Jakarta Sans','DM Sans',system-ui,sans-serif;
+  color-scheme:light
+}
+*{box-sizing:border-box}
+html,body{background:var(--l-bg)}
+body{margin:0;font-family:var(--font-main);color:var(--l-ink);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+button,input,select{font-family:inherit}
+
+/* Kop: zelfde kleurverloop en logo-stijl als WedjeBetje */
+.topbar{background:var(--l-head);border-bottom:1px solid var(--l-line);padding:calc(14px + env(safe-area-inset-top)) 16px 14px}
+.topbar-in{max-width:600px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.topbar-logo{margin:0;font-size:22px;font-weight:800;letter-spacing:-.5px;line-height:1.1;color:var(--l-ink)}
+.topbar-ai{display:inline-block;background:var(--l-tip);border-radius:6px;padding:0 .18em;margin-left:.06em;box-shadow:0 0 0 2px var(--l-away)}
+.topbar-tag{margin-left:auto;font-size:11px;font-weight:700;color:var(--l-mute);background:rgba(255,255,255,.7);border:1px solid var(--l-line);border-radius:999px;padding:4px 10px;white-space:nowrap}
+
+.wrap{max-width:600px;margin:0 auto;padding:16px 16px calc(24px + env(safe-area-inset-bottom))}
+
+/* Tabs: pil-balk zoals Vergelijk; actief = lila vlak + donkerblauw (zoals onderbalk/chips in Licht) */
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin-bottom:16px;background:var(--l-card);border:1px solid var(--l-line);border-radius:999px;box-shadow:var(--l-shadow)}
+.tabBtn{min-height:44px;border:1px solid transparent;border-radius:999px;background:transparent;color:var(--l-mute);font-size:14px;font-weight:700;cursor:pointer}
+.tabBtn.active{background:var(--l-soft);border-color:var(--l-ink);color:var(--l-ink)}
+.tab{display:none}.tab.active{display:block}
+
+/* Kaarten */
+.card{background:var(--l-card);border:1px solid var(--l-line);border-radius:18px;box-shadow:var(--l-shadow);padding:18px;margin-bottom:14px}
+.card h2,.importCard h2{margin:0 0 6px;font-size:17px;font-weight:800;color:var(--l-ink);letter-spacing:-.2px}
+.sub{color:var(--l-mute);font-size:14px;margin:0 2px 12px}
+.hint{color:var(--l-mute);font-size:13px;line-height:1.5;margin-bottom:12px}
+.mini{font-size:12.5px;color:var(--l-mute);margin-top:10px;line-height:1.45}
+.msg{min-height:20px;margin-top:10px;color:var(--warn);font-size:13px;font-weight:600}
+.empty{color:var(--l-mute);font-size:14px;padding:6px 2px}
+.footer{color:var(--l-faint);text-align:center;font-size:12px;margin-top:18px}
+
+/* Invoer */
+label{display:block;margin-bottom:6px;font-size:12px;font-weight:700;color:var(--l-mute);letter-spacing:.2px}
+input,select{width:100%;font-size:18px;padding:12px 14px;border-radius:14px;border:1px solid var(--l-line);background:var(--l-card);color:var(--l-ink);outline:none}
+input::placeholder{color:var(--l-faint)}
+input:focus,select:focus{border-color:var(--l-accent)}
+select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,#5D6079 50%),linear-gradient(135deg,#5D6079 50%,transparent 50%);background-position:calc(100% - 17px) 52%,calc(100% - 12px) 52%;background-size:5px 5px;background-repeat:no-repeat;padding-right:28px}
+#odd{font-size:24px;font-weight:800}
+.entry{display:grid;grid-template-columns:1fr 92px;gap:10px;align-items:end}
+.entry .good,.entry .bad{min-height:54px;font-size:24px}
+.entryBtns{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* Knoppen: wit met warme lijn, pil-vorm (WedjeBetje .vg-knop-licht); primair = donkerblauw (Bekijk ›) */
+button{min-height:44px;border:1px solid var(--l-line);border-radius:999px;background:var(--l-card);color:var(--l-ink);font-size:14px;font-weight:700;cursor:pointer;transition:transform .08s,background .15s,border-color .15s}
+button:active{transform:scale(.97)}
+button:hover{border-color:rgba(17,20,57,.25)}
+button:disabled{opacity:.55;cursor:default}
+button:focus-visible{outline:2px solid var(--l-accent);outline-offset:2px}
+.primary{background:var(--l-ink);border-color:var(--l-ink);color:#fff}
+.primary:hover{background:#23285e;border-color:#23285e}
+.good{background:var(--ok);border-color:var(--ok);color:#fff}
+.bad{background:var(--no);border-color:var(--no);color:#fff}
+.good:hover{background:#166534;border-color:#166534}.bad:hover{background:#bf463c;border-color:#bf463c}
+.danger{color:var(--no);border-color:var(--no-line)}
+.danger:hover{background:var(--no-bg);border-color:var(--no)}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap}
+.toolbar button,.importBtn{padding:0 16px}
+.importBtn{width:100%}
+
+/* Statistiek-tegels (zoals dash-tegels: klein label boven, groot cijfer) */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.stats.four{grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
+.stat{background:var(--l-card);border:1px solid var(--l-line);border-radius:18px;box-shadow:var(--l-shadow);padding:12px 8px;text-align:center;min-width:0}
+.card .stat{background:var(--l-bg);box-shadow:none;border-radius:14px}
+.stat small{display:block;margin-bottom:4px;font-size:11px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--l-mute)}
+.stat strong{display:block;font-size:24px;font-weight:800;color:var(--l-ink);letter-spacing:-.5px;white-space:nowrap}
+.stats.four .stat strong{font-size:20px}
+
+/* Screenshot-import */
+.importStatus{font-size:13px;color:var(--l-mute);margin:10px 0 0}
+.importStatus:empty{display:none}
+.preview{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.previewRow{display:grid;grid-template-columns:1fr 48px 48px 42px;gap:8px;align-items:center;border:1px solid var(--l-line);border-radius:14px;padding:8px;background:var(--l-bg)}
+.previewRow input{padding:9px 12px;font-size:18px;font-weight:700;border-radius:12px}
+.previewToggle{min-height:44px;font-size:19px;padding:0;color:var(--l-mute)}
+.previewToggle.activeGood{background:var(--ok);border-color:var(--ok);color:#fff}
+.previewToggle.activeBad{background:var(--no);border-color:var(--no);color:#fff}
+.removeBtn{min-height:44px;font-size:20px;padding:0;color:var(--no);border-color:var(--no-line)}
+.previewActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.previewActions button{padding:0 16px}
+
+/* Overzicht */
+.searchBox{margin-bottom:12px}.searchBox input{font-size:16px;padding:11px 14px;border-radius:999px}
+.ranking{display:flex;flex-direction:column;gap:8px}
+.rank{display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;border:1px solid var(--l-line);border-radius:14px;padding:12px;background:var(--l-card)}
+.rank.strong{border-color:var(--ok-line);box-shadow:inset 3px 0 0 var(--ok)}
+.place{font-size:13px;color:var(--l-faint);font-weight:800}
+.oddRow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.odd{font-size:22px;font-weight:800;letter-spacing:-.4px;color:var(--l-ink)}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:800;border-radius:999px;padding:3px 9px;border:1px solid;white-space:nowrap;line-height:1.3}
+.badge.ok{color:var(--ok);background:var(--ok-bg);border-color:var(--ok-line)}
+.badge.no{color:var(--no);background:var(--no-bg);border-color:var(--no-line)}
+.badge.warn{color:var(--warn);background:var(--warn-bg);border-color:var(--warn-line)}
+.marks{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.mark{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:6px;font-size:12px;font-weight:900;line-height:1}
+.mark.ok{color:var(--ok);background:var(--ok-bg)}
+.mark.no{color:var(--no);background:var(--no-bg)}
+.details{font-size:12px;color:var(--l-mute);margin-top:6px}
+.pct{font-size:22px;font-weight:800;text-align:right;color:var(--l-ink);letter-spacing:-.4px}
+.perfect,.rank.strong .pct{color:var(--ok)}
+
+/* Meldingen (stijl van Vergelijk-kaarten) */
+.alertList{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.alert{border:1px solid var(--l-line);border-radius:14px;padding:12px;background:var(--l-card)}
+.alertTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.alertMatch{font-weight:800;font-size:15px;color:var(--l-ink);line-height:1.3}
+.alertMeta{font-size:12.5px;color:var(--l-mute);margin-top:6px;line-height:1.5;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
+.chip{display:inline-flex;align-items:center;font-size:12px;font-weight:700;color:var(--l-ink);background:var(--l-bg);border:1px solid var(--l-line);border-radius:999px;padding:2px 9px;white-space:nowrap}
+.alertBtns{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.alertBtns button{min-height:38px;padding:0 14px;font-size:13px}
+.alertBtns .good{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok)}
+.alertBtns .bad{background:var(--no-bg);border-color:var(--no-line);color:var(--no)}
+.alertBtns .good:hover{background:rgba(34,197,94,.2)}.alertBtns .bad:hover{background:rgba(210,85,74,.16)}
+.alertBtns button.on{box-shadow:0 0 0 2px var(--l-ink) inset}
+
+.hidden{display:none!important}
+@media(max-width:400px){
+  .wrap{padding:14px 14px calc(22px + env(safe-area-inset-bottom))}
+  .card{padding:16px}
+  .rank{grid-template-columns:30px 1fr auto;gap:8px;padding:11px}
+  .pct,.odd{font-size:20px}
+  .stats.four{grid-template-columns:repeat(2,1fr)}
+  .previewRow{grid-template-columns:1fr 44px 44px 40px;gap:6px}
+  .topbar-logo{font-size:20px}
+}
 </style>
 </head>
 <body>
+<header class="topbar"><div class="topbar-in"><h1 class="topbar-logo">Odds<span class="topbar-ai">Analyse</span></h1><span class="topbar-tag">bij WedjeBetje</span></div></header>
 <main class="wrap">
-<h1>Odds Analyse</h1>
 <div class="tabs"><button id="tabInputBtn" class="tabBtn active" type="button">Invoer</button><button id="tabOverviewBtn" class="tabBtn" type="button">Overzicht</button></div>
 <section id="tabInput" class="tab active">
 <div class="sub">Voer een odd in of importeer een screenshot.</div>
-<section class="card"><div class="entry"><div><label for="odd">Odd</label><input id="odd" inputmode="decimal" placeholder="1,75" autocomplete="off"></div><div><label for="repeat">Herhaal</label><select id="repeat"><option value="1">1x</option><option value="2">2x</option><option value="3">3x</option><option value="4">4x</option><option value="5">5x</option><option value="6">6x</option><option value="7">7x</option><option value="8">8x</option><option value="9">9x</option><option value="10">10x</option></select></div><button id="goodBtn" class="good" type="button">✓</button><button id="badBtn" class="bad" type="button">✕</button></div><div id="msg" class="msg"></div></section>
-<section class="card importCard"><h2>Screenshot importeren</h2><div class="hint">De app leest de screenshot nu twee keer, normaal en extra scherp. Controleer daarna de lijst. Je kunt odds wijzigen, ✓ of ✕ omzetten, verwijderen en zelf een gemiste regel toevoegen.</div><input id="screenshotInput" class="hidden" type="file" accept="image/*"><button id="screenshotBtn" class="importBtn" type="button">Screenshot kiezen</button><div id="importStatus" class="importStatus"></div><div id="importPreview" class="preview"></div><div id="previewActions" class="previewActions hidden"><button id="addImportRowBtn" type="button">+ Regel toevoegen</button><button id="confirmImportBtn" class="primary" type="button">Alles toevoegen</button><button id="cancelImportBtn" type="button">Annuleren</button></div></section>
+<section class="card"><div class="entry"><div><label for="odd">Odd</label><input id="odd" inputmode="decimal" placeholder="1,75" autocomplete="off"></div><div><label for="repeat">Herhaal</label><select id="repeat"><option value="1">1x</option><option value="2">2x</option><option value="3">3x</option><option value="4">4x</option><option value="5">5x</option><option value="6">6x</option><option value="7">7x</option><option value="8">8x</option><option value="9">9x</option><option value="10">10x</option></select></div><div class="entryBtns"><button id="goodBtn" class="good" type="button" aria-label="Goed">✓</button><button id="badBtn" class="bad" type="button" aria-label="Fout">✕</button></div></div><div id="msg" class="msg"></div></section>
+<section class="card importCard"><h2>Screenshot importeren</h2><div class="hint">De app leest de screenshot nu twee keer, normaal en extra scherp. Controleer daarna de lijst. Je kunt odds wijzigen, ✓ of ✕ omzetten, verwijderen en zelf een gemiste regel toevoegen.</div><input id="screenshotInput" class="hidden" type="file" accept="image/*"><button id="screenshotBtn" class="importBtn primary" type="button">Screenshot kiezen</button><div id="importStatus" class="importStatus"></div><div id="importPreview" class="preview"></div><div id="previewActions" class="previewActions hidden"><button id="addImportRowBtn" type="button">+ Regel toevoegen</button><button id="confirmImportBtn" class="primary" type="button">Alles toevoegen</button><button id="cancelImportBtn" type="button">Annuleren</button></div></section>
 <section class="stats"><div class="stat"><small>Totaal</small><strong id="total">0</strong></div><div class="stat"><small>Goed</small><strong id="good">0</strong></div><div class="stat"><small>Score</small><strong id="score">0%</strong></div></section>
-<section class="card" style="margin-top:16px"><div class="toolbar"><button id="clearOddBtn" type="button">Nieuwe odd</button><button id="undoBtn" type="button">Laatste invoer wissen</button><button id="clearBtn" type="button">Alles wissen</button><button id="exportBtn" type="button">Export CSV</button></div></section>
+<section class="card"><div class="toolbar"><button id="clearOddBtn" type="button">Nieuwe odd</button><button id="undoBtn" type="button">Laatste invoer wissen</button><button id="clearBtn" class="danger" type="button">Alles wissen</button><button id="exportBtn" type="button">Export CSV</button></div></section>
 </section>
 <section id="tabOverview" class="tab"><section class="card"><h2>Hele lijst</h2><div class="searchBox"><input id="searchOdd" inputmode="decimal" placeholder="Zoek odd, bijvoorbeeld 1,95" autocomplete="off"></div><div class="hint">Gesorteerd op hoogste percentage. Bij gelijke percentages staat de odd met de meeste metingen bovenaan.</div><div id="ranking" class="ranking"></div></section></section>
 <div class="footer">Je invoer blijft op dit apparaat bewaard.</div>
@@ -35,7 +173,7 @@ function parseOddValue(v){const n=Number(String(v).trim().replace(',','.'));retu
 function showTab(name){const input=name==='input';$('tabInput').classList.toggle('active',input);$('tabOverview').classList.toggle('active',!input);$('tabInputBtn').classList.toggle('active',input);$('tabOverviewBtn').classList.toggle('active',!input);if(!input)render()}
 function add(ok){const odd=parseOddValue(oddInput.value);if(odd===null){msg.textContent='Vul eerst een geldige odd in.';return}const count=Math.max(1,Math.min(10,Number(repeat.value)||1)),batchId=Date.now()+'-'+Math.random().toString(36).slice(2);for(let i=0;i<count;i++)data.push({odd,ok,createdAt:new Date().toISOString(),batchId});save();msg.textContent=count+'x '+(ok?'goed':'fout')+' toegevoegd.';repeat.value='1';render();oddInput.select()}
 function grouped(){const map=new Map();for(const x of data){const k=Number(x.odd).toFixed(2);if(!map.has(k))map.set(k,{odd:Number(k),total:0,good:0,bad:0,results:[]});const g=map.get(k);g.total++;g.results.push(!!x.ok);x.ok?g.good++:g.bad++}return[...map.values()].map(g=>({...g,score:g.total?g.good/g.total*100:0}))}
-function render(){const good=data.filter(x=>x.ok).length;$('total').textContent=data.length;$('good').textContent=good;$('score').textContent=data.length?Math.round(good/data.length*100)+'%':'0%';const q=(searchOdd.value||'').trim().replace(',','.');let rows=grouped().sort((a,b)=>b.score-a.score||b.total-a.total||b.good-a.good||a.odd-b.odd);if(q)rows=rows.filter(g=>g.odd.toFixed(2).includes(q)||String(g.odd).includes(q));ranking.innerHTML=rows.length?rows.map((g,i)=>'<div class="rank"><div class="place">#'+(i+1)+'</div><div><div class="odd">'+g.odd.toFixed(2).replace('.',',')+'</div><div class="marks">'+g.results.map(ok=>'<span class="mark '+(ok?'ok':'no')+'">'+(ok?'✓':'✕')+'</span>').join('')+'</div><div class="details">'+g.good+' goed, '+g.bad+' fout, '+g.total+' totaal</div></div><div class="pct '+(g.score===100?'perfect':'')+'">'+Math.round(g.score)+'%</div></div>').join(''):'<div class="empty">'+(q?'Geen odd gevonden.':'Nog geen odds ingevoerd.')+'</div>'}
+function render(){const good=data.filter(x=>x.ok).length;$('total').textContent=data.length;$('good').textContent=good;$('score').textContent=data.length?Math.round(good/data.length*100)+'%':'0%';const q=(searchOdd.value||'').trim().replace(',','.');let rows=grouped().sort((a,b)=>b.score-a.score||b.total-a.total||b.good-a.good||a.odd-b.odd);if(q)rows=rows.filter(g=>g.odd.toFixed(2).includes(q)||String(g.odd).includes(q));ranking.innerHTML=rows.length?rows.map((g,i)=>{const strong=g.total>=3&&g.good/g.total>=2/3;return '<div class="rank'+(strong?' strong':'')+'"><div class="place">#'+(i+1)+'</div><div><div class="oddRow"><span class="odd">'+g.odd.toFixed(2).replace('.',',')+'</span>'+(strong?'<span class="badge ok">🔥 sterk</span>':'')+'</div><div class="marks">'+g.results.map(ok=>'<span class="mark '+(ok?'ok':'no')+'">'+(ok?'✓':'✕')+'</span>').join('')+'</div><div class="details">'+g.good+' goed, '+g.bad+' fout, '+g.total+' totaal</div></div><div class="pct '+(g.score===100?'perfect':'')+'">'+Math.round(g.score)+'%</div></div>'}).join(''):'<div class="empty">'+(q?'Geen odd gevonden.':'Nog geen odds ingevoerd.')+'</div>'}
 function resetPreview(){pendingImport=[];pendingFingerprint='';importPreview.innerHTML='';previewActions.classList.add('hidden')}
 function parseScreenshotText(text){const lines=String(text||'').replace(/\r/g,'\n').split(/\n+/).map(x=>x.replace(/[|]/g,' ').trim()).filter(Boolean),found=[];for(let i=0;i<lines.length;i++){const line=lines[i];const hasRaak=/\braak\b/i.test(line),hasMis=/\bmis\b/i.test(line),hasPlus=/\+\s*[€E]/i.test(line),hasMinus=/(?:-|−)\s*[€E]/i.test(line);if(!(hasRaak||hasMis||hasPlus||hasMinus))continue;const ok=hasRaak||hasPlus;let markerPos=line.length;for(const re of [/\braak\b/i,/\bmis\b/i,/\+\s*[€E]/i,/(?:-|−)\s*[€E]/i]){const m=line.match(re);if(m&&m.index<markerPos)markerPos=m.index}const contexts=[line.slice(0,markerPos),lines[i-1]||'',lines[i-2]||''];let odd=null;for(const ctx of contexts){const nums=[...ctx.matchAll(/([1-9]\d?(?:[.,]\d{1,2}))/g)];for(let j=nums.length-1;j>=0;j--){const candidate=parseOddValue(nums[j][1]);if(candidate!==null){odd=candidate;break}}if(odd!==null)break}if(odd!==null)found.push({odd,ok})}return found}
 function occurrenceMap(items){const m=new Map();for(const x of items){const k=x.odd.toFixed(2)+'|'+(x.ok?'1':'0');m.set(k,(m.get(k)||0)+1)}return m}
@@ -55,5 +193,6 @@ $('clearBtn').addEventListener('click',()=>{if(confirm('Alle ingevoerde odds wis
 $('exportBtn').addEventListener('click',()=>{if(!data.length)return;const rows=[['odd','resultaat','datum'],...data.map(x=>[Number(x.odd).toFixed(2),x.ok?'goed':'fout',x.createdAt||''])],csv=rows.map(r=>r.join(';')).join('\n'),blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='odds-analyse.csv';a.click();URL.revokeObjectURL(url)});
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');render();
 </script>
+<script src="sync.js"></script>
 </body>
 </html>
