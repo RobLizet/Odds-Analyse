@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>WB Claude</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+  html,body{margin:0;height:100%;background:#000;color:#fff;font-family:system-ui,sans-serif}
+  body{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+       background:radial-gradient(ellipse at 80% 20%,#5a0a0f 0%,#000 55%)}
+  img{width:96px;height:96px;border-radius:24px;box-shadow:0 0 24px #d4141e88}
+  a{color:#fff;background:#d4141e;padding:14px 28px;border-radius:14px;text-decoration:none;font-weight:600}
+  p{opacity:.6;font-size:14px;margin:0}
+</style>
+</head>
+<body>
+<img src="icon-192.png" alt="">
+<p>WedjeBetje-project openen…</p>
+<a id="go" href="#">Open project</a>
+<script>
+  // ▼▼ PLAK HIER DE LINK VAN JE WEDJEBETJE-PROJECT ▼▼
+  const PROJECT_URL = "https://claude.ai/project/019e54db-696d-7692-88f8-e85ece9bb87e";
+  // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
+  // Forceer openen in de Claude-app (Android), met browser als terugval
+  const path = PROJECT_URL.replace(/^https?:\/\//, "");
+  const INTENT = "intent://" + path +
+    "#Intent;scheme=https;package=com.anthropic.claude;" +
+    "S.browser_fallback_url=" + encodeURIComponent(PROJECT_URL) + ";end";
+  const isAndroid = /Android/i.test(navigator.userAgent);
+  const target = isAndroid ? INTENT : PROJECT_URL;
+
+  document.getElementById("go").href = target;
+  location.href = target;
+</script>
+</body>
+</html>
